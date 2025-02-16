@@ -4,7 +4,7 @@ import RightSide from './RightSide'
 
 const Header = () => {
   return (
-    <div className='heading flex justify-between items-center bg-blue-100  m-5'>
+    <div className='heading flex justify-between items-center h-[6vh] bg-green-100  m-0 '>
       <LeftSide></LeftSide>
       <RightSide></RightSide>
     </div>

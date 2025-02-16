@@ -83,11 +83,11 @@ const Calendar = () => {
   }
   // SHOW
   return (
-    <div className="max-w-[80%] mt-2 min-w-[80%] p-4 bg-green-300 shadow-lg rounded-lg">
+    <div className="w-[100%] h-[89.5vh] my-0 min-w-[80%] p-4 pt-0 bg-blue-200 shadow-lg scr">
       {/* Header: Month Navigation */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-0">
         <button onClick={goToPrevMonth} className="p-2 bg-gray-300 rounded">&lt;</button>
-        <h2 className="text-2xl font-bold">{currentDate.format("MMMM YYYY")}</h2>
+        <h2 className="text-2xl font-bold mb-0">{currentDate.format("MMMM YYYY")}</h2>
         <button onClick={goToNextMonth} className="p-2 bg-gray-300 rounded">&gt;</button>
       </div>
 
@@ -99,7 +99,7 @@ const Calendar = () => {
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-7 gap-1 font-sans">
+      <div className="grid grid-cols-7 auto-rows-fr gap-1 font-sans">
         {days.map((day, index) => {
           const dateKey = day ? currentDate.date(day).format("YYYY-MM-DD") : null;
           const isToday = dateKey === today.format("YYYY-MM-DD");
@@ -108,8 +108,8 @@ const Calendar = () => {
             <div
               key={index}
               onClick={() => handleClickedDate(day)}
-              className={`p-4 text-center rounded-[5px] h-20 cursor-pointer 
-                ${day ? (isToday ? "bg-red-400 text-white font-bold" : "bg-white hover:bg-blue-200") : "bg-white bg-opacity-50"}
+              className={`p-4 text-center rounded-[5px] min-h-[60px] cursor-pointer 
+                ${day ? (isToday ? "bg-red-400 text-white font-bold" : "bg-white hover:bg-blue-300 hover:bg-opacity-30") : "bg-white bg-opacity-50"}
               `}
             >
               {day}

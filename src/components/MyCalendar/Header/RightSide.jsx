@@ -3,7 +3,7 @@ import React from 'react'
 
 const RightSide = () => {
   return (
-    <div className='RightSide-container flex flex-row-reverse p-10  bg-green-300 max-h-1' >
+    <div className='RightSide-container flex flex-row-reverse p-10  ' >
       <div className="profile w-10 h-10 bg-gray-500 border border-black border-solid rounded-[50px] mr-5 ">
         prof
       </div>
