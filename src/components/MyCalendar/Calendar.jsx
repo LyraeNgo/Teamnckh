@@ -148,6 +148,9 @@ const Calendar = () => {
               placeholder="Enter event..."
               className="w-[90%] p-2 border rounded mb-2  "
             />
+            {/* working, please stay away !! */}
+            <input type="time" 
+            />
             <div className="flex justify-end gap-2 ">
               <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
               <button onClick={addEvent} className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>

@@ -2,14 +2,10 @@ import React from 'react'
 
 const NavBar = (props) => {
   return (
-    <>
-      <div className="max-h-7">
-        <div className="navbar--logo">
-          <img src="public/vite.svg" alt="" />
-        </div>
-        <div className="justify-center">{props.children}</div>
-      </div>
-    </>
+    <div className="h-20 flex justify-between bg-green-700 rounded-md">
+      <img src="public/Logo.png" alt="" className='p-5 border rounded-[40px]'/>
+      <div className="p-5">{props.children}</div>
+    </div>
   )
 }
 
