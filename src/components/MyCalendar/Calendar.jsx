@@ -16,7 +16,9 @@ const Calendar = () => {
 
   const [newEvent, setNewEvent] = useState(""); // Store new event text
 
+  const [newEventDescription, setNewEventDescription] = useState(""); // Store event description
 
+  const [editingEvent, setEditingEvent] = useState(null); // Track which event is being edited
   // Navigate between months
   const goToNextMonth = () => setCurrentDate(currentDate.add(1, "month"));
   const goToPrevMonth = () => setCurrentDate(currentDate.subtract(1, "month"));
@@ -31,21 +33,50 @@ const Calendar = () => {
 
   // Add event to the selected date
   const addEvent = () => {
-    // Prevent adding if no event text or clicked date
+    // Check if there is no event name or clicked date
     if (!clickedDate || newEvent.trim() === "") return;
   
-    // Add event with time to the selected date
-    setEvents((prev) => ({
-      ...prev,
-      [clickedDate.format("YYYY-MM-DD")]: [
-        ...(prev[clickedDate.format("YYYY-MM-DD")] || []),
-        { event: newEvent, time: newEventTime },
-      ],
-    }));
+    const eventDate = clickedDate.format("YYYY-MM-DD");
+    
+    if (editingEvent) {
+      // Editing an existing event
+      setEvents((prev) => {
+        const updatedEvents = prev[eventDate].map((event, index) => {
+          // Find the event being edited and update it
+          if (index === editingEvent.index) {
+            return {
+              ...event,
+              event: newEvent,
+              time: newEventTime,
+              description: newEventDescription, // Update the description
+            };
+          }
+          return event;
+        });
   
-    setNewEvent(""); // Clear input after saving
-    setNewEventTime(""); // Clear time input after saving
-    setShowModal(false); // Close modal
+        return {
+          ...prev,
+          [eventDate]: updatedEvents,
+        };
+      });
+  
+      setEditingEvent(null); // Reset editing state after saving
+    } else {
+      // Adding a new event
+      setEvents((prev) => ({
+        ...prev,
+        [eventDate]: [
+          ...(prev[eventDate] || []),
+          { event: newEvent, time: newEventTime, description: newEventDescription },
+        ],
+      }));
+    }
+  
+    // Reset all inputs and close the modal
+    setNewEvent("");
+    setNewEventTime("");
+    setNewEventDescription("");
+    setShowModal(false);
   };
 
   // Delete event from the date
@@ -59,6 +90,15 @@ const Calendar = () => {
         [date]: updatedEvents.length ? updatedEvents : undefined, // Remove key if empty
       };
     });
+  };
+
+  const handleClickedEvent = (event, eventIndex) => {
+    setNewEvent(event.event); // Set the current event name
+    setNewEventTime(event.time); // Set the current event time
+    setNewEventDescription(event.description || ""); // Set the current event description
+    
+    setEditingEvent({ index: eventIndex, date: clickedDate.format("YYYY-MM-DD") }); // Mark event as being edited
+    setShowModal(true); // Show modal for editing
   };
 
   // Generate calendar grid
@@ -118,59 +158,78 @@ const Calendar = () => {
               
               {/* Show events if exist */}
               {events[dateKey] &&
-              events[dateKey].map((event, eventIndex) => (
-                <div key={eventIndex} className="mt-1 bg-gray-200 p-1 rounded-md text-sm flex justify-between">
-                  <span>
-                    {event.event} {event.time && `at ${event.time}`} {/* Render event and time as strings */}
-                  </span>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent opening modal
-                      deleteEvent(dateKey, eventIndex);
-                    }}
-                    className="text-black ml-2 rounded-md border-0"
+                events[dateKey].map((event, eventIndex) => (
+                  <div
+                    key={eventIndex}
+                    className="mt-1 bg-gray-200 p-1 rounded-md text-sm flex justify-between"
+                    onClick={() => handleClickedEvent(event, eventIndex)} // Allow clicking to edit
                   >
-                    &#x00d7; {/* Delete button */}
-                  </button>
-                </div>
-              ))}
+                    <span>
+                      {event.event} {event.time && `at ${event.time}`} {/* Render event and time */}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent opening modal
+                        deleteEvent(dateKey, eventIndex);
+                      }}
+                      className="text-black ml-2 rounded-md border-0"
+                    >
+                      &#x00d7; {/* Delete button */}
+                    </button>
+                  </div>
+                ))}
             </div>
           );
         })}
       </div>
 
+      
+
       {/* Modal for Adding Events */}
       {showModal && (
-  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-    <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[250px]">
-      <h3 className="text-lg font-bold mb-2">
-        Add Event for {clickedDate?.format("MMMM DD, YYYY")}
-      </h3>
-      <input
-        type="text"
-        value={newEvent}
-        onChange={(e) => setNewEvent(e.target.value)}
-        placeholder="Enter event..."
-        className="w-[90%] p-2 border rounded mb-2"
-      />
-      {/* Time input */}
-      <input
-        type="time"
-        value={newEventTime}
-        onChange={(e) => setNewEventTime(e.target.value)} // Update time state
-        className="w-[90%] p-2 border rounded mb-2"
-      />
-      <div className="flex justify-end gap-2">
-        <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">
-          Cancel
-        </button>
-        <button onClick={addEvent} className="px-4 py-2 bg-blue-500 text-white rounded">
-          Save
-        </button>
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[300px]">
+          <h3 className="text-lg font-bold mb-2">
+            {editingEvent ? `Edit Event on ${clickedDate?.format("MMMM DD, YYYY")}` : `Add Event for ${clickedDate?.format("MMMM DD, YYYY")}`}
+          </h3>
+          
+          {/* Event Name */}
+          <input
+            type="text"
+            value={newEvent}
+            onChange={(e) => setNewEvent(e.target.value)}
+            placeholder="Enter event name..."
+            className="w-[90%] p-2 border rounded mb-2"
+          />
+          
+          {/* Event Time */}
+          <input
+            type="time"
+            value={newEventTime}
+            onChange={(e) => setNewEventTime(e.target.value)} // Update time state
+            className="w-[90%] p-2 border rounded mb-2"
+          />
+          
+          {/* Event Description */}
+          <textarea
+            value={newEventDescription}
+            onChange={(e) => setNewEventDescription(e.target.value)}
+            placeholder="Enter event description..."
+            className="w-[90%] p-2 border rounded mb-2"
+            rows="4"
+          />
+          
+          <div className="flex justify-end gap-2">
+            <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">
+              Cancel
+            </button>
+            <button onClick={addEvent} className="px-4 py-2 bg-blue-500 text-white rounded">
+              {editingEvent ? "Save Changes" : "Save"}
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-)}
+    )}
 
     </div>
   );
