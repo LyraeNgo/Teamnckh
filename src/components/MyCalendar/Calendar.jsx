@@ -23,6 +23,8 @@ const Calendar = () => {
   const goToNextMonth = () => setCurrentDate(currentDate.add(1, "month"));
   const goToPrevMonth = () => setCurrentDate(currentDate.subtract(1, "month"));
 
+
+  
   // Click on a date: select it & open the event modal
   const handleClickedDate = (day) => {
     if (day) {
