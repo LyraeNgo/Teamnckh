@@ -16,6 +16,7 @@ const Calendar = () => {
 
   const [newEvent, setNewEvent] = useState(""); // Store new event text
   //time setTime 
+  const [eventTime, setEventTime] = useState(""); // Store selected time
 
   // Navigate between months
   const goToNextMonth = () => setCurrentDate(currentDate.add(1, "month"));
@@ -31,18 +32,18 @@ const Calendar = () => {
 
   // Add event to the selected date
   const addEvent = () => {
-    // break condition and when user type nothing
-    if (!clickedDate || newEvent.trim() === "") return;
-
+    if (!clickedDate || newEvent.trim() === "" || eventTime.trim() === "") return; // Prevent empty input
+  
     setEvents((prev) => ({
-      ...prev, // keep all the previous events
+      ...prev,
       [clickedDate.format("YYYY-MM-DD")]: [
-        ...(prev[clickedDate.format("YYYY-MM-DD")] || []), // Keep existing events
-        newEvent, 
+        ...(prev[clickedDate.format("YYYY-MM-DD")] || []),
+        { text: newEvent, time: eventTime }, // Store both event text and time
       ],
     }));
-
+  
     setNewEvent(""); // Clear input
+    setEventTime(""); // Clear time input
     setShowModal(false); // Close modal
   };
 
@@ -116,15 +117,16 @@ const Calendar = () => {
               {/* Show events if exist */}
               {events[dateKey] &&
                 events[dateKey].map((event, eventIndex) => (
-                  <div key={eventIndex} className=" mt-1 bg-gray-200 p-1 rounded-md text-sm flex justify-between">
-                    <span>{event}</span>
-                    {/* delete event */}
+                  <div key={eventIndex} className="mt-1 bg-gray-200 p-1 rounded-md text-sm flex justify-between">
+                    <span>
+                      {event.time} - {event.text} {/* Show time before event name */}
+                    </span>
                     <button
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent opening modal
                         deleteEvent(dateKey, eventIndex);
                       }}
-                      className="text-black  ml-2 rounded-md border-0 "
+                      className="text-black ml-2 rounded-md border-0"
                     >
                       &#x00d7;
                     </button>
@@ -137,26 +139,35 @@ const Calendar = () => {
 
       {/* PopUp Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[200px]">
-            <h3 className="text-lg font-bold mb-2 ">Add Event for {clickedDate?.format("MMMM DD, YYYY")}</h3>
-            <input
-              type="text"
-              value={newEvent}
-              onChange={(e) => setNewEvent(e.target.value)}
-              placeholder="Enter event..."
-              className="w-[90%] p-2 border rounded mb-2  "
-            />
-            {/* working, please stay away !! */}
-            <input type="time" 
-            />
-            <div className="flex justify-end gap-2 ">
-              <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
-              <button onClick={addEvent} className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[250px]">
+              <h3 className="text-lg font-bold mb-2">Add Event for {clickedDate?.format("MMMM DD, YYYY")}</h3>
+              
+              {/* Event Name Input */}
+              <input
+                type="text"
+                value={newEvent}
+                onChange={(e) => setNewEvent(e.target.value)}
+                placeholder="Enter event..."
+                className="w-[90%] p-2 border rounded mb-2"
+              />
+
+              {/* Event Time Input */}
+              <input
+                type="time"
+                value={eventTime}
+                onChange={(e) => setEventTime(e.target.value)}
+                className="w-[90%] p-2 border rounded mb-2"
+              />
+
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                <button onClick={addEvent} className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
     </div>
   );
 };
