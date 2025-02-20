@@ -10,7 +10,7 @@ const Calendar = () => {
 
   const [events, setEvents] = useState({}); // Store multiple events per date
 
-
+  const [newEventTime, setNewEventTime] = useState("");
   // adding the event by using the Function AddEvent below
   const [showModal, setShowModal] = useState(false); // Control modal visibility
 
@@ -31,18 +31,20 @@ const Calendar = () => {
 
   // Add event to the selected date
   const addEvent = () => {
-    // break condition and when user type nothing
+    // Prevent adding if no event text or clicked date
     if (!clickedDate || newEvent.trim() === "") return;
-
+  
+    // Add event with time to the selected date
     setEvents((prev) => ({
-      ...prev, // keep all the previous events
+      ...prev,
       [clickedDate.format("YYYY-MM-DD")]: [
-        ...(prev[clickedDate.format("YYYY-MM-DD")] || []), // Keep existing events
-        newEvent,
+        ...(prev[clickedDate.format("YYYY-MM-DD")] || []),
+        { event: newEvent, time: newEventTime },
       ],
     }));
-
-    setNewEvent(""); // Clear input
+  
+    setNewEvent(""); // Clear input after saving
+    setNewEventTime(""); // Clear time input after saving
     setShowModal(false); // Close modal
   };
 
@@ -116,21 +118,22 @@ const Calendar = () => {
               
               {/* Show events if exist */}
               {events[dateKey] &&
-                events[dateKey].map((event, eventIndex) => (
-                  <div key={eventIndex} className=" mt-1 bg-gray-200 p-1 rounded-md text-sm flex justify-between">
-                    <span>{event}</span>
-                    {/* delete event */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent opening modal
-                        deleteEvent(dateKey, eventIndex);
-                      }}
-                      className="text-black  ml-2 rounded-md border-0 "
-                    >
-                      &#x00d7;
-                    </button>
-                  </div>
-                ))}
+              events[dateKey].map((event, eventIndex) => (
+                <div key={eventIndex} className="mt-1 bg-gray-200 p-1 rounded-md text-sm flex justify-between">
+                  <span>
+                    {event.event} {event.time && `at ${event.time}`} {/* Render event and time as strings */}
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent opening modal
+                      deleteEvent(dateKey, eventIndex);
+                    }}
+                    className="text-black ml-2 rounded-md border-0"
+                  >
+                    &#x00d7; {/* Delete button */}
+                  </button>
+                </div>
+              ))}
             </div>
           );
         })}
@@ -138,26 +141,37 @@ const Calendar = () => {
 
       {/* Modal for Adding Events */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[200px]">
-            <h3 className="text-lg font-bold mb-2 ">Add Event for {clickedDate?.format("MMMM DD, YYYY")}</h3>
-            <input
-              type="text"
-              value={newEvent}
-              onChange={(e) => setNewEvent(e.target.value)}
-              placeholder="Enter event..."
-              className="w-[90%] p-2 border rounded mb-2  "
-            />
-            {/* working, please stay away !! */}
-            <input type="time" 
-            />
-            <div className="flex justify-end gap-2 ">
-              <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
-              <button onClick={addEvent} className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[250px]">
+      <h3 className="text-lg font-bold mb-2">
+        Add Event for {clickedDate?.format("MMMM DD, YYYY")}
+      </h3>
+      <input
+        type="text"
+        value={newEvent}
+        onChange={(e) => setNewEvent(e.target.value)}
+        placeholder="Enter event..."
+        className="w-[90%] p-2 border rounded mb-2"
+      />
+      {/* Time input */}
+      <input
+        type="time"
+        value={newEventTime}
+        onChange={(e) => setNewEventTime(e.target.value)} // Update time state
+        className="w-[90%] p-2 border rounded mb-2"
+      />
+      <div className="flex justify-end gap-2">
+        <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">
+          Cancel
+        </button>
+        <button onClick={addEvent} className="px-4 py-2 bg-blue-500 text-white rounded">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
