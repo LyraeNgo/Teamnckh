@@ -15,7 +15,7 @@ const Calendar = () => {
   const [showModal, setShowModal] = useState(false); // Control modal visibility
 
   const [newEvent, setNewEvent] = useState(""); // Store new event text
-
+  //time setTime 
 
   // Navigate between months
   const goToNextMonth = () => setCurrentDate(currentDate.add(1, "month"));
@@ -38,7 +38,7 @@ const Calendar = () => {
       ...prev, // keep all the previous events
       [clickedDate.format("YYYY-MM-DD")]: [
         ...(prev[clickedDate.format("YYYY-MM-DD")] || []), // Keep existing events
-        newEvent,
+        newEvent, 
       ],
     }));
 
@@ -90,7 +90,6 @@ const Calendar = () => {
         <h2 className="text-2xl font-bold mb-0">{currentDate.format("MMMM YYYY")}</h2>
         <button onClick={goToNextMonth} className="p-2 bg-gray-300 rounded">&gt;</button>
       </div>
-
       {/* Weekdays */}
       <div className="grid grid-cols-7 gap-1 text-center font-bold text-xl font-sans ">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -136,7 +135,7 @@ const Calendar = () => {
         })}
       </div>
 
-      {/* Modal for Adding Events */}
+      {/* PopUp Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[200px]">
