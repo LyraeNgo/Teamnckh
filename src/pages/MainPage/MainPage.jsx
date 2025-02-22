@@ -6,10 +6,14 @@ const MainPage = () => {
   return (
     <div>
         <Header></Header>
-        <div className="flex">
-          
-        <SideBar></SideBar>
-        <Calendar></Calendar>
+        <div className="flex justify-around">
+            
+              <SideBar></SideBar>
+            
+            
+
+              <Calendar ></Calendar>
+            
         </div>
     </div>
   )
