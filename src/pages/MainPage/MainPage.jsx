@@ -9,9 +9,6 @@ const MainPage = () => {
         <div className="flex justify-around">
             
               <SideBar></SideBar>
-            
-            
-
               <Calendar ></Calendar>
             
         </div>
