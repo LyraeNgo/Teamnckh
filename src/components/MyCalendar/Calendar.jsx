@@ -47,7 +47,7 @@ const Calendar = () => {
             ? {
                 ...event,
                 event: newEvent,
-                time: newEventTime||,
+                time: newEventTime,
                 description: newEventDescription,
                 tag: selectedTag, 
               }
