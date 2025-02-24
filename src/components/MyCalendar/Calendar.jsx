@@ -157,10 +157,28 @@ const Calendar = () => {
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg w-96 h-[300px]">
+          <div className="bg-white p-4 rounded-lg shadow-lg w-[400px] h-[300px]">
             <h3 className="text-lg font-bold mb-2">
               {editingEvent ? `Edit Event` : `Add Event`}
             </h3>
+
+            
+
+            <input 
+            type="text" 
+            autoFocus 
+            value={newEvent} 
+            onChange={(e) => setNewEvent(e.target.value)} 
+            placeholder="Event Name" 
+            className="w-[95%] p-2  border rounded mb-2" />
+            
+            <div className="flex ">
+
+            <input 
+            type="time" 
+            value={newEventTime} 
+            onChange={(e) => setNewEventTime(e.target.value)} 
+            className="w-[95%] p-2 border rounded mb-2 mr-3" />
 
             <select
               value={selectedTag.name}
@@ -171,10 +189,16 @@ const Calendar = () => {
                 <option key={index} value={tag.name}>{tag.name}</option>
               ))}
             </select>
+            </div>
+            {/* working place, stay faraway*/}
+            <input type="radio"  /><label htmlFor="">Notice me</label>
+            {/* */}
 
-            <input type="text" autoFocus value={newEvent} onChange={(e) => setNewEvent(e.target.value)} placeholder="Event Name" className="w-full p-2 border rounded mb-2" />
-            <input type="time" value={newEventTime} onChange={(e) => setNewEventTime(e.target.value)} className="w-full p-2 border rounded mb-2" />
-            <textarea value={newEventDescription} onChange={(e) => setNewEventDescription(e.target.value)} placeholder="Description" className="w-full p-2 border rounded mb-2" rows="2" />
+            <textarea 
+            value={newEventDescription} 
+            onChange={(e) => setNewEventDescription(e.target.value)} 
+            placeholder="Description" 
+            className="w-[95%]  p-2 border rounded mb-2 resize-none" rows="5" />
 
             <div className="flex justify-end gap-2">
               <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
