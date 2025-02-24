@@ -1,6 +1,6 @@
 import { useState } from "react";
 import dayjs from "dayjs";
-
+import Tagging from "../SideBar/Tagging";
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   // keep days
@@ -203,8 +203,9 @@ const Calendar = () => {
                 <option key={index} value={tag.name}>{tag.name}</option>
               ))}
             </select>
+            
             </div>
-
+            <Tagging></Tagging>
             {/* working place, stay faraway*/}
             <input type="radio"  /><label htmlFor="">Notice me</label>
             {/* */}
