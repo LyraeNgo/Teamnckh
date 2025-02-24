@@ -47,7 +47,7 @@ const Calendar = () => {
             ? {
                 ...event,
                 event: newEvent,
-                time: newEventTime,
+                time: newEventTime||,
                 description: newEventDescription,
                 tag: selectedTag, 
               }
@@ -112,7 +112,6 @@ const Calendar = () => {
   for (let i = endDay; i < 6; i++){
     days.push(null);
   }
-  const [flagModal, setFlagModal]= useState(false)
   // returning---------------------------------------------//
   return (
     <div className="w-[90%] my-0 min-w-[80%] p-4 pt-0 bg-blue-200 shadow-lg">
