@@ -206,9 +206,7 @@ const Calendar = () => {
             </select>
             </div>
 
-            {/* working place, stay faraway*/}
-            <input type="radio"  /><label htmlFor="">Notice me</label>
-            {/* */}
+            
 
             <textarea 
             value={newEventDescription} 
