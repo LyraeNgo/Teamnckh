@@ -7,8 +7,6 @@ const About = () => {
     <div>
       <h1>this is About Page</h1>
       <button onClick={()=>navigate(-1)}>back to Home</button>
-
-    
     </div>
   )
 }
