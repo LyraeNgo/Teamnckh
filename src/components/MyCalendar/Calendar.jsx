@@ -276,7 +276,7 @@ const Calendar = () => {
             </div>
           </div>
         </div>)
-      };
+      }
     </div>
     
   );
