@@ -175,23 +175,23 @@ const Calendar = () => {
                 events[dateKey].map((event, eventIndex) => (
                   <div
                     key={eventIndex}
-                    className="mt-1 bg-gray-200 p-1 rounded-md text-sm flex justify-between w-full flex-col"
+                    className="mt-1 bg-gray-200 p-1 rounded-md text-sm flex  justify-center w-[80%] flex-col"
                     onClick={() => handleClickedEvent(event, eventIndex)}
                   >
                     <span className="px-3 py-1 rounded" style={{ backgroundColor: event.tag?.color }}></span>
-                    <div>
-                    <span>
-                      {event.event} {event.time && `at ${event.time}`}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteEvent(dateKey, eventIndex);
-                      }}
-                      className="text-black ml-2 rounded-md border-0"
-                    >
-                      &#x00d7;
-                    </button>
+                    <div className=" mt-1 flex justify-center w-[100%]">
+                      <span className="w-[70%]">
+                        {event.event} {event.time && `at ${event.time}`}
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteEvent(dateKey, eventIndex);
+                        }}
+                        className="text-black ml-2 rounded-lg border-0 justify-end"
+                      >
+                        &#x00d7;
+                      </button>
                     </div>
                   </div>
                 ))}
