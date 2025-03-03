@@ -7,7 +7,7 @@ const SideBar = () => {
     <div>
         <CreateBtn></CreateBtn>
         <MiniCalendar></MiniCalendar>
-        <Tagging></Tagging>
+        
     </div>
   )
 }
