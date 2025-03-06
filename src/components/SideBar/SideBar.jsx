@@ -5,8 +5,9 @@ import Tagging from './Tagging'
 const SideBar = () => {
   return (
     <div>
-        <CreateBtn></CreateBtn>
+        <CreateBtn></CreateBtn>   
         <MiniCalendar></MiniCalendar>
+        <Tagging></Tagging>
         
     </div>
   )
