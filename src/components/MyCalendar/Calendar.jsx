@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";  
 import dayjs from "dayjs";
-
+import { TagContext } from "../lib/TagContext";
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   // keep days
@@ -19,11 +19,7 @@ const Calendar = () => {
 
 
 
-  const [defaultTags,setDefaultTag] =useState( [
-    { name: "Work", color: "#FF5733" },
-    { name: "Personal", color: "#33FF57" },
-    { name: "Meeting", color: "#3357FF" },
-  ]);
+  const [defaultTags,setDefaultTag] =useContext(TagContext);
   // tags
   // store all tags in the <option>
   const [selectedTag, setSelectedTag] = useState(defaultTags[0]);
@@ -33,7 +29,7 @@ const Calendar = () => {
   
   // FUNCTION ZONE -----------------------------------------------------------------------------------------//
   const inpItem=defaultTags.map((tags)=>{
-    return<option key={tags.name}>{tags.name}</option>
+    return<option key={tags.name} value={tags.name}>{tags.name}</option>
   })
 
   const handleTagName=(e)=>{
@@ -47,6 +43,7 @@ const Calendar = () => {
     if(tagName.trim()==="")return;
     setDefaultTag((prev)=>[...prev,{name: tagName, color: tagColor}]);
     setSelectedTag({name: tagName, color: tagColor});
+    setDefaultTag(tagName, tagColor);
     setTagName("");
     setTagColor("#000000");
     setShowTagModal(false);
@@ -77,7 +74,7 @@ const Calendar = () => {
                 event: newEvent,
                 time: newEventTime,
                 description: newEventDescription,
-                tag: selectedTag, 
+                tag: selectedTag
               }
             : event
         );
@@ -99,7 +96,7 @@ const Calendar = () => {
     setNewEvent("");
     setNewEventTime("");
     setNewEventDescription("");
-    setSelectedTag("");
+    setSelectedTag(defaultTags[0]);  
     setShowModal(false);
   };
 
