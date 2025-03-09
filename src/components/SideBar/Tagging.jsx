@@ -1,5 +1,5 @@
 import React from 'react'
-import {defaultTags} from '../MyCalendar/Calendar'
+
 const Tagging = () => {
   return (
     <div>
