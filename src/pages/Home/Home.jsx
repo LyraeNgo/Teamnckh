@@ -14,7 +14,7 @@ const Home = () => {
       <h1>this is Home Page</h1>
       <button className='mr-2'onClick={()=>navigate("/Contact")}>To Contact</button>
       <button onClick={()=>navigate("/MainPage")}>To MainPage</button>
-
+          
     </div>
   )
 }
